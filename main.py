@@ -10,97 +10,84 @@ charm
 level
 levelEvolve
 evolveID
-
--------------------------
-Master file template:
-currentID
--------------------------
-
-with open('test.dat', 'rt') as file:
-    myArray = []
-    for line in file:
-        myArray.append(int(line.rstrip()))
-
-print(myArray)
-print('Luck: '+str(myArray[5]))
+HP
 """
+
 import random as r
 
-masterData = []
-baseList = [['Bulbasaur', ''], 'Charmander', 'Squirtle', 'Caterpie', 'Weedle', 'Pidgey', 'Rattata', 'Spearow', 'Ekans',
-            'Pikachu', 'Sandshrew', 'Nidoran (F)', 'Nidoran (M)', 'Clefairy', 'Vulpix', 'Jigglypuff', 'Zubat',
-            'Oddish', 'Paras', 'Venonat', 'Diglett']
+masterData = []  # declaring the masterData array before using it
 
-with open('master.dat', 'rt') as master:
+POKEMON = ((1, 'Bulbasaur', 'Ivysaur', 1, 16), (2, 'Ivysaur', 'Venusaur', 2, 36), (3, 'Venusaur', 'None', 3, 0),
+           (4, 'Charmander', 'Charmeleon', 1, 16), (5, 'Charmeleon', 'Charizard', 2, 36),
+           (6, 'Charizard', 'None', 3, 0),
+           (7, 'Squirtle', 'Wartortle', 1, 16), (8, 'Wartortle', 'Blastoise', 2, 36), (9, 'Blastoise', 'None', 3, 0),
+           (10, 'Caterpie', 'Metapod', 1, 7), (11, 'Metapod', 'Butterfree', 2, 10), (12, 'Butterfree', 'None', 3, 0),
+           (13, 'Weedle', 'Kakuna', 1, 7), (14, 'Kakuna', 'Beedrill', 2, 10), (15, 'Beedrill', 'None', 3, 0),
+           (16, 'Pidgey', 'Pidgeotto', 1, 18), (17, 'Pidgeotto', 'Pidgeot', 2, 36), (18, 'Pidgeot', 'None', 3, 0),
+           (19, 'Rattata', 'Raticate', 1, 20), (20, 'Raticate', 'None', 2, 0),
+           (21, 'Spearow', 'Fearow', 1, 20), (22, 'Fearow', 'None', 2, 0),
+           (23, 'Ekans', 'Arbok', 1, 22), (24, 'Arbok', 'None', 2, 0),
+           (25, 'Pikachu', 'Raichu', 1, 16), (26, 'Raichu', 'None', 2, 0),
+           (27, 'Sandshrew', 'Sandslash', 1, 22), (28, 'Sandslash', 'None', 2, 0),
+           (29, 'Nidoran (F)', 'Nidorina', 1, 16), (30, 'Nidorina', 'Nidoqueen', 2, 32), (31, 'Nidoqueen', 'None', 3, 0),
+           (32, 'Nidoran (M)', 'Nidorino', 1, 16), (33, 'Nidorino', 'Nidoking', 2, 32), (34, 'Nidoking', 'None', 3, 0),
+           ()
+           )  # Pokedex pretty much. Contains [ID, current state, next state, form number, level to evolve
+
+with open('master.dat', 'rt') as master:  # opens the master data file which contains the current unique number to
+    # use for the next pokemon
     for line in master:
-        masterData.append(int(line.rstrip()))
+        masterData.append(int(line.rstrip()))  # puts the contents of the file into the previously declared masterData
+        # array
 
 
-def create_poke():
-    data = []
+def create_poke_data():
+    x = 1
+    data = []  # will contain the data for the new pokemon
 
-    def roll_stats():
-        temp_data = [r.randint(1, 5), r.randint(1, 5), r.randint(1, 5), r.randint(1, 5), r.randint(1, 5)]
+    def roll_stats():  # used to roll the stats
+        temp_data = [r.randint(1, 8), r.randint(1, 8), r.randint(1, 8), r.randint(1, 8), r.randint(1, 8)]
         return temp_data
 
-    for n in range(1, len(baseList)+1):
-        print(str(n) + ': ' + baseList[n-1])
+    def find_poke_data(poke_choice):  # searches through the PokeDex
+        for unit in range(0, len(POKEMON)):
+            if poke_choice != 1 and POKEMON[unit][3] == 1:
+                poke_choice -= 1
+            elif poke_choice == 1 and POKEMON[unit][3] == 1:
+                return POKEMON[unit]
+
+    for n in range(1, len(POKEMON)-1):
+        if POKEMON[n - 1][3] == 1:
+            print(str(x) + ': ' + str(POKEMON[n - 1][1]))
+            x += 1
 
     choice = int(input('Enter the number of the Pokemon you wish to create: '))
-    if 1 <= choice <= 21:
-        if choice == 1:
-            poke_id = 1
-        elif choice == 2:
-            poke_id = 4
-        elif choice == 3:
-            poke_id = 7
-        elif choice == 4:
-            poke_id = 10
-        elif choice == 5:
-            poke_id = 13
-        elif choice == 6:
-            poke_id = 16
-        elif choice == 7:
-            poke_id = 19
-        elif choice == 8:
-            poke_id = 21
-        elif choice == 9:
-            poke_id = 23
-        elif choice == 10:
-            poke_id = 25
-        elif choice == 11:
-            poke_id = 27
-        elif choice == 12:
-            poke_id = 29
-        elif choice == 13:
-            poke_id = 32
-        elif choice == 14:
-            poke_id = 35
-        elif choice == 15:
-            poke_id = 37
-        elif choice == 16:
-            poke_id = 39
-        elif choice == 17:
-            poke_id = 41
-        elif choice == 18:
-            poke_id = 43
-        elif choice == 19:
-            poke_id = 46
-        elif choice == 20:
-            poke_id = 48
-        else:
-            poke_id = 50
-    else:
-        print('Choice not in range...')
 
-    cID = masterData[0]
-    data.append(cID)
-    data.append(poke_id)
+    current_id = masterData[0]
+    data.append(current_id)
+    poke_data = (find_poke_data(choice))
+    data.append(poke_data[0])
+    data.append(poke_data[1])
+
     stats = roll_stats()
-    for i in stats:
-        data.append(stats[i-1])
+
+    for item in stats:
+        data.append(item)
+
     data.append(1)
-    print(data)
+    data.append(poke_data[4])
+    data.append((poke_data[0] + 1))
+    data.append(100)
+
+    file_name = str(data[2])+str(data[0])+'.dat'
+
+    current_id += 1
+
+    with open('master.dat', 'wt') as master_dat:
+        master_dat.write(str(current_id))
+
+    with open(file_name, 'x') as create_file:
+        for num in data:
+            create_file.write(str(num)+'\n')
 
 
-create_poke()
